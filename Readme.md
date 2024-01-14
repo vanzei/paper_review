@@ -29,4 +29,5 @@ This desegn decision will benefit the system in the long run as explained in fur
 
 To avoid bottlenecks the read and write operations have to be minimized, which was benefited of a fixed chunksize choice.
 The clients never read from the Master, the master is just responsible for having global knowledge of the chucks and the transfer is made directly from the chunkservers.
-
+Process steps:
+First, using the fixed chunksize, the client translates the file name and byte offset specified by the application into a chunk index within the file. Then, it sendsthe master a request containing the file name and chunk index. The master replies with the corresponding chunk handle and locations of the replicas. The client caches this information using the file name and chunkindex as the key.
