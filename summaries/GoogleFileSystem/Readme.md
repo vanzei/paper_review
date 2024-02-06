@@ -30,7 +30,7 @@ The decision of using 64MB chunksize impose benefit and some challenges.
 ### Benefits
    * Reduces clients' need to communicate with the master. Since the chunck size is fixed, a single communication is need to share location of the chunks. Tha helps a lot since most of the read and writes are sequential, but even for randoma ccess the information can be cached by the custoemr.
    * Large chunck size also makes it more likely that the chuncks will be modified in a given chunk, reducing the network overhead.
-   * Reduces the metadata size, allowing tos tore this informarion into memory.
+   * Reduces the metadata size, allowing to store this informarion into memory.
   
 ### Drawbacks
 
@@ -41,3 +41,9 @@ The decision of using 64MB chunksize impose benefit and some challenges.
 ## Metadata
 
    * The master stores three major types of metadata: the file and chunk namespaces, the mapping from files to chunks, and the locations of each chunk’s replicas. All metadata is kept in the master’s memory
+
+### In Memory Metadata, Chunk Locations and Operations Log
+
+   * Metadata is saved in memory, so its acess is pretty fast and to keep it up to date the decision was to implement periodic scans. Periodic scans also are used to perform garbage collection and re-replciation in case of chunkserver failure.
+  
+   * Memory limitations are a not so critical concern since the just needs 64 bytes for each 64MB chunk, and some partial chunks + namespace data. Increasing the memory is a small price for this scenario.
