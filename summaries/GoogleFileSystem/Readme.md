@@ -47,3 +47,5 @@ The decision of using 64MB chunksize impose benefit and some challenges.
    * Metadata is saved in memory, so its acess is pretty fast and to keep it up to date the decision was to implement periodic scans. Periodic scans also are used to perform garbage collection and re-replciation in case of chunkserver failure.
   
    * Memory limitations are a not so critical concern since the just needs 64 bytes for each 64MB chunk, and some partial chunks + namespace data. Increasing the memory is a small price for this scenario.
+  
+   * The master does not keep a persistent record of which chunkservers have a replica of a given chunk. It gets the information at stay time and updates its location though the Heartbeat messages.
